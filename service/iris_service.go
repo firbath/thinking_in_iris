@@ -13,33 +13,35 @@ import (
 )
 
 func IrisRun(host string, port int) {
-	app := iris.New()
-	m := mvc.New(app.Party("/books"))
-	m.Handle(new(BookController))
-	app.Listen(fmt.Sprintf("%s:%d", host, port))
+	app := iris.Default()
+	registerController(app)
+	registerViews(app)
+	//app.Listen(fmt.Sprintf("%s:%d", host, port))
+
+	app.Run(iris.Addr(fmt.Sprintf("%s:%d", host, port)))
 }
 
-type BookController struct {
-	/* dependencies */
+func registerController(app *iris.Application) {
+
+	mvc.New(app.Party("/")).Handle(new(RootController))
+	mvc.New(app.Party("/books")).Handle(new(BookController))
+
 }
 
-// GET: http://localhost:8080/books
-func (c *BookController) Get() []Book {
-	return []Book{
-		{"HelloWorld"},
-		{"Go Design Patterns"},
-		{"Black Hat Go"},
-	}
-}
+func registerViews(app *iris.Application) {
+	// 注册静态文件路由
+	app.HandleDir("/img", "./resource/img")
+	app.HandleDir("/css", "./resource/css")
+	app.HandleDir("/javascript", "./resource/javascript")
 
-// POST: http://localhost:8080/books
-func (c *BookController) Post(b Book) int {
-	println("Received Book: " + b.Title)
+	tmpl := iris.HTML("./resource/templates", ".html")
+	app.RegisterView(tmpl)
 
-	return iris.StatusCreated
-}
+	app.Get("/", func(ctx iris.Context) {
+		// 绑定： {{.message}}　为　"Hello world!"
+		ctx.ViewData("message", "Hello world!")
+		// 渲染模板文件： ./resource/templates/demo.html
+		ctx.View("demo.html")
+	})
 
-// Book example.
-type Book struct {
-	Title string `json:"title"`
 }
