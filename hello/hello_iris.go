@@ -35,7 +35,7 @@ type BookController struct {
 // GET: http://localhost:8080/books
 func (c *BookController) Get() []Book {
 	return []Book{
-		{"Mastering Concurrency in Go1"},
+		{"HelloWorld"},
 		{"Go Design Patterns"},
 		{"Black Hat Go"},
 	}
