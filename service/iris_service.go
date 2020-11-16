@@ -30,17 +30,17 @@ func registerController(app *iris.Application) {
 
 func registerViews(app *iris.Application) {
 	// 注册静态文件路由
-	app.HandleDir("/img", "./resource/img")
-	app.HandleDir("/css", "./resource/css")
-	app.HandleDir("/javascript", "./resource/javascript")
+	app.HandleDir("/img", "./assets/img")
+	app.HandleDir("/css", "./assets/css")
+	app.HandleDir("/javascript", "./assets/javascript")
 
-	tmpl := iris.HTML("./resource/templates", ".html")
+	tmpl := iris.HTML("./assets/templates", ".html")
 	app.RegisterView(tmpl)
 
 	app.Get("/", func(ctx iris.Context) {
 		// 绑定： {{.message}}　为　"Hello world!"
 		ctx.ViewData("message", "Hello world!")
-		// 渲染模板文件： ./resource/templates/demo.html
+		// 渲染模板文件： ./assets/templates/demo.html
 		ctx.View("demo.html")
 	})
 

@@ -1,0 +1,17 @@
+
+docker build -f base_go.Dockerfile -t base_go --no-cache .
+
+docker build -f build.Dockerfile -t hello_iris --no-cache .
+
+docker run -itd \
+--name hello_iris_run \
+-p 9091:9091 \
+--restart=always \
+hello_iris
+
+docker run --name=prometheus -d \
+-p 9090:9090 \
+--restart=always \
+-v /home/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+-v /home/prometheus/data/:/prometheus/data/ \
+prom/prometheus

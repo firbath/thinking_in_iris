@@ -1,0 +1,8 @@
+.git
+.idea
+*.md
+*.exe
+*.pdf
+docs
+log
+vendor
