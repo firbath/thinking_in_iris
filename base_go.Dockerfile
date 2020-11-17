@@ -1,7 +1,8 @@
 FROM centos:7.6.1810
 
 WORKDIR /go/src/app
-# modify CharacterSet TimeZone
+
+# modify CharacterSet/TimeZone && install golang
 RUN yum install kde-l10n-Chinese -y && \
     yum install glibc-common -y && \
     localedef -c -f UTF-8 -i zh_CN zh_CN.utf8 && \

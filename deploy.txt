@@ -1,17 +1,17 @@
-
+/*
+ * 基于docker的golang开发，部署环境
+ * 不同于脚本语言，golang需要预编译，但运行时可以不需要解释器
+ * 所以docker环境思路如下：
+ *      1.先准备一个基础编译环境img
+ *      2.debug时在基础环境里compile得到编译img，可以运行调试
+ *      3.生产上直接运行编译结果文件可以有效减小包体
+ */
 docker build -f base_go.Dockerfile -t base_go --no-cache .
 
-docker build -f build.Dockerfile -t hello_iris --no-cache .
+docker build -f build.Dockerfile -t hello_iris .
 
 docker run -itd \
 --name hello_iris_run \
 -p 9091:9091 \
 --restart=always \
 hello_iris
-
-docker run --name=prometheus -d \
--p 9090:9090 \
---restart=always \
--v /home/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
--v /home/prometheus/data/:/prometheus/data/ \
-prom/prometheus
