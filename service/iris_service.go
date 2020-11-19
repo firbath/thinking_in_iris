@@ -25,6 +25,7 @@ func registerController(app *iris.Application) {
 
 	mvc.New(app.Party("/")).Handle(new(RootController))
 	mvc.New(app.Party("/books")).Handle(new(BookController))
+	mvc.New(app.Party("/demo")).Handle(new(DemoController))
 
 }
 
