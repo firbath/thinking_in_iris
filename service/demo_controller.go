@@ -21,8 +21,52 @@ type Product struct {
 	Price int
 }
 
+// 交易表
+type Transaction struct {
+	gorm.Model
+	Entry       int64
+	Exit        int64
+	ContractId  uint
+	Remark      string
+	ActivatedAt time.Time
+	Status      int8
+}
+
+// 合约表
+type Contract struct {
+	gorm.Model
+	Entry       int64
+	TotalNum    int32
+	Complete    int32
+	Payment     int64
+	Remark      string
+	ActivatedAt time.Time
+	Status      int8
+}
+
+// 请求&响应 报文
+type Content struct {
+	Action string
+	Data   Data
+}
+
+type Data struct {
+}
+
+type Sub struct {
+	Data
+	Name string
+}
+
+func (transaction Transaction) TableName() string {
+	return "y_transaction"
+}
+func (contract Contract) TableName() string {
+	return "y_contract"
+}
+
 func getAll() []Product {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("demo.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -42,7 +86,7 @@ func getAll() []Product {
 }
 
 func demo() {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("demo.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -73,8 +117,8 @@ type DemoController struct {
 }
 
 // GET: http://localhost:8080/demo
-func (c *DemoController) Get() []Product {
-	return getAll()
+func (c *DemoController) Get() Content {
+	return Content{"haha", Data{}}
 }
 
 // POST: http://localhost:8080/demo

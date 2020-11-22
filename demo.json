@@ -1,0 +1,11 @@
+{
+  "action": "hahaha",
+  "data": {
+    "Ab": [
+      "USER",
+      "MANAGER",
+      "ADMIN"
+    ],
+    "Cd": "123"
+  }
+}
